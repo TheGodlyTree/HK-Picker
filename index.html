@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Launcher</title>
+    <style>
+        /* ===== PAGE / BACKGROUND BEVEL ===== */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background: #bcbcbc;
+            overflow: hidden;
+
+            box-shadow:
+                inset 4px 4px 0 #ffffff,
+                inset -4px -4px 0 #8a8a8a,
+                inset 8px 8px 0 #dfdfdf,
+                inset -8px -8px 0 #5a5a5a;
+        }
+
+        /* ===== LOADING SCREEN ===== */
+        #loadingScreen {
+            position: fixed;
+            inset: 0;
+            background: #bcbcbc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            font-weight: bold;
+            z-index: 100;
+            transition: opacity 0.25s ease;
+        }
+
+        #loadingScreen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* ===== CENTER PANEL (BEVELED) ===== */
+        #menuWrapper {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #menu {
+            background: #e0e0e0;
+            padding: 60px 80px;
+            border-radius: 12px;
+            box-shadow:
+                inset 3px 3px 0 rgba(255,255,255,0.9),
+                inset -3px -3px 0 rgba(0,0,0,0.35),
+                8px 8px 16px rgba(0,0,0,0.35);
+        }
+
+        #menuContent {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            align-items: center;
+        }
+
+        /* ===== BUTTONS (IMPROVED HOVER + CLICK) ===== */
+        .btn {
+            background: linear-gradient(145deg, #00ff33, #00c82a);
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            padding: 15px 34px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            outline: none;
+            width: 100%;
+            min-width: 300px;
+
+            box-shadow:
+                inset 2px 2px 0 rgba(255,255,255,0.45),
+                inset -2px -2px 0 rgba(0,0,0,0.35),
+                5px 5px 10px rgba(0,0,0,0.45);
+
+            transition:
+                transform 0.08s ease,
+                box-shadow 0.08s ease,
+                filter 0.12s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.08);
+            box-shadow:
+                inset 2px 2px 0 rgba(255,255,255,0.55),
+                inset -2px -2px 0 rgba(0,0,0,0.3),
+                8px 8px 16px rgba(0,0,0,0.5),
+                0 0 12px rgba(0,255,60,0.45);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+            filter: brightness(0.95);
+            box-shadow:
+                inset -3px -3px 0 rgba(255,255,255,0.45),
+                inset 3px 3px 0 rgba(0,0,0,0.5),
+                2px 2px 6px rgba(0,0,0,0.6);
+        }
+
+        /* Specific color for the "New" button to match your previous design logic */
+        .btn-blue {
+            background: linear-gradient(145deg, #00b4db, #0083b0);
+        }
+        .btn-blue:hover {
+            0 0 12px rgba(0,180,219,0.45);
+        }
+
+        /* ===== IFRAME ===== */
+        #iframeContainer {
+            position: fixed;
+            inset: 0;
+            display: none;
+            background: #000;
+            z-index: 50;
+        }
+
+        #iframeContainer iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        #backBtn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 60;
+            padding: 5px 15px;
+            opacity: 0.5;
+        }
+        #backBtn:hover { opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <div id="loadingScreen">LOADING...</div>
+
+    <div id="menuWrapper">
+        <div id="menu">
+            <div id="menuContent">
+                <button class="btn" onclick="openGame('https://hollow-knight-chi.vercel.app/')">
+                    Launch Hollow Knight (Old)
+                </button>
+                
+                <button class="btn btn-blue" onclick="openGame('https://www.example.com/game2')">
+                    Launch Hollow Knight (New)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="iframeContainer">
+        <button id="backBtn" class="btn" onclick="closeGame()" style="width: auto; min-width: auto; font-size: 14px;">Back to Menu</button>
+        <iframe id="gameFrame" src=""></iframe>
+    </div>
+
+    <script>
+        // Hide loading screen after page loads
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loadingScreen');
+            loader.classList.add('hidden');
+        });
+
+        function openGame(url) {
+            const container = document.getElementById('iframeContainer');
+            const frame = document.getElementById('gameFrame');
+            
+            // Set URL and show the container
+            frame.src = url;
+            container.style.display = 'block';
+        }
+
+        function closeGame() {
+            const container = document.getElementById('iframeContainer');
+            const frame = document.getElementById('gameFrame');
+            
+            // Clear URL and hide container
+            frame.src = "";
+            container.style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
